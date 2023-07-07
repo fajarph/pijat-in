@@ -3,7 +3,7 @@ import Order from "App/Models/Order";
 
 export default class OrderController {
 
-    public async getOrder({ request, response, auth }: HttpContextContract) {
+    public async getOrder({ response, auth }: HttpContextContract) {
         try {
             await auth.use("api").authenticate()
 

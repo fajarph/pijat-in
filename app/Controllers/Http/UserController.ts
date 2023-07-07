@@ -3,7 +3,7 @@ import User from "App/Models/User";
 
 export default class UserController {
 
-    public async getUser({ request, response, auth }: HttpContextContract) {
+    public async getUser({ response, auth }: HttpContextContract) {
         try {
             await auth.use("api").authenticate()
 
@@ -28,7 +28,7 @@ export default class UserController {
         }
     }
 
-    public async getUserToken({ request, response, auth }: HttpContextContract) {
+    public async getUserToken({ response, auth }: HttpContextContract) {
         try {
             await auth.use("api").authenticate()
           
