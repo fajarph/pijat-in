@@ -5,7 +5,7 @@ export default class UserController {
 
     public async getUser({ response, auth }: HttpContextContract) {
         try {
-            await auth.use("api").authenticate()
+            // await auth.use("api").authenticate()
 
             const user = auth.use("api").user
             const output = await User.query()
