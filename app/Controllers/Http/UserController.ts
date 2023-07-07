@@ -3,9 +3,9 @@ import User from "App/Models/User";
 
 export default class UserController {
 
-    public async getUser({ response, auth }: HttpContextContract) {
+    public async getUser({ response }: HttpContextContract) {
         try {
-            await auth.use("api").authenticate()
+            // await auth.use("api").authenticate()
 
             const output = await User.query()
                 .preload("orders", (query) => {
