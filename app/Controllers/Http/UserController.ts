@@ -5,16 +5,13 @@ export default class UserController {
 
     public async getUser({ response, auth }: HttpContextContract) {
         try {
-            // await auth.use("api").authenticate()
+            await auth.use("api").authenticate()
 
-            const user = auth.use("api").user
             const output = await User.query()
-                .where("id", user!.id)
                 .preload("orders", (query) => {
                     query.select("nama_lengkap", "gender", "durasi", "tambahan")
                 })
                 .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
-                .first()
 
             response.status(200).json({
                 status: 200,
@@ -33,7 +30,11 @@ export default class UserController {
             await auth.use("api").authenticate()
           
             const user = auth.use("api").user
-            const output = await User.query().where("id", user!.id).first()
+            const output = await User.query()
+                .where("id", user!.id)
+                .preload("orders", (query) => 
+                    {query.select("nama_lengkap", "gender", "durasi", "tambahan")
+                })
 
             response.status(200).json(output)
         } catch (error) {
@@ -63,6 +64,4 @@ export default class UserController {
             return response.status(401).json({msg: 'Terjadi kesalahan saat melakukan update'})
         }
     }
-
-    
 }
