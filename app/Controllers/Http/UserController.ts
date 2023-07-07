@@ -3,9 +3,9 @@ import User from "App/Models/User";
 
 export default class UserController {
 
-    public async getUser({ response }: HttpContextContract) {
+    public async getUser({ response, auth }: HttpContextContract) {
         try {
-            // await auth.use("api").authenticate()
+            await auth.use("api").authenticate()
 
             const output = await User.query()
                 .preload("orders", (query) => {
@@ -33,7 +33,8 @@ export default class UserController {
             const output = await User.query()
                 .where("id", user!.id)
                 .preload("orders", (query) => 
-                    {query.select("nama_lengkap", "gender", "durasi", "tambahan")
+                {query
+                    .select("nama_lengkap", "gender", "durasi", "tambahan")
                 })
 
             response.status(200).json(output)
