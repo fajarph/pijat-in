@@ -63,4 +63,6 @@ export default class UserController {
             return response.status(401).json({msg: 'Terjadi kesalahan saat melakukan update'})
         }
     }
+
+    
 }
