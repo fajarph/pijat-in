@@ -36,14 +36,6 @@ export default class AuthController {
             const email = request.input("email")
             const password = request.input("password")
 
-            const existingUser = await User.findBy("email", email)
-            if (existingUser) {
-                return {
-                    status: 409,
-                    message: "Email yang anda masukan sudah terdaftar",
-                }
-            }
-
             const newUser = new User()
 
             newUser.nama = nama
