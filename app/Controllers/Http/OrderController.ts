@@ -9,7 +9,10 @@ export default class OrderController {
 
             const output = await Order.query().select("nama_lengkap", "gender", "durasi", "tambahan", "user_id")
 
-            response.status(200).json(output)
+            response.status(200).json({
+                status: 200,
+                order: output
+            })
         } catch (error) {
             response.status(404).json({
                 status: 404,
@@ -39,7 +42,7 @@ export default class OrderController {
             response.status(200).json({
                 status: 200,
                 msg: "Selamat Menikmati",
-                order: newOrder
+                order: newOrder,
             })
         } catch (error) {
             response.status(404).json({
