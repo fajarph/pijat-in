@@ -32,6 +32,7 @@ export default class UserController {
             const user = auth.use("api").user
             const output = await User.query()
                 .where("id", user!.id)
+                .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
                 .preload("orders", (query) => 
                 {query
                     .select("nama_lengkap", "gender", "durasi", "tambahan")
