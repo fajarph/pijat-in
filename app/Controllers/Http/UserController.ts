@@ -38,7 +38,10 @@ export default class UserController {
                 })
                 .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
 
-            response.status(200).json(output)
+            response.status(200).json({
+                status: 200,
+                user: output
+            })
         } catch (error) {
             response.status(401).json({
                 status: 401,
