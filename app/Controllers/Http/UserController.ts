@@ -32,11 +32,11 @@ export default class UserController {
             const user = auth.use("api").user
             const output = await User.query()
                 .where("id", user!.id)
-                .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
                 .preload("orders", (query) => 
                 {query
                     .select("nama_lengkap", "gender", "durasi", "tambahan")
                 })
+                .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
 
             response.status(200).json(output)
         } catch (error) {
@@ -47,8 +47,10 @@ export default class UserController {
         }
     }
 
-    public async update({ request, response, params }: HttpContextContract) {
+    public async update({ request, response, params, auth }: HttpContextContract) {
         try {
+            await auth.use("api").authenticate()
+
             const user = await User.find(params.id)
 
             if (!user) {
