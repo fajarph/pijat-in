@@ -3,7 +3,7 @@ import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Order extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column()
   public nama_lengkap: string
@@ -22,6 +22,9 @@ export default class Order extends BaseModel {
 
   @column()
   public tambahan: string
+
+  @column()
+  public tanggal_pesanan: string
 
   @column({ serializeAs: null })
   public user_id: number | null
