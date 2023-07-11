@@ -28,13 +28,26 @@ export default class OrderController {
             const user = auth.use('api').user
             const { nama_lengkap, gender, durasi, tambahan } = request.all()
 
+            const generateRandomValue = (length) => {
+                const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+                let result = ''
+          
+                for (let i = 0; i < length; i++) {
+                  const randomIndex = Math.floor(Math.random() * characters.length)
+                  result += characters.charAt(randomIndex)
+                }
+          
+                return result
+              }
+
             const newOrder = new Order()
             newOrder.fill({
                 nama_lengkap,
                 gender,
                 durasi,
                 tambahan,
-                user_id: user?.id
+                user_id: user?.id,
+                id: generateRandomValue(5)
             })
 
             await newOrder.save()
