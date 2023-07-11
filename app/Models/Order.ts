@@ -23,8 +23,8 @@ export default class Order extends BaseModel {
   @column()
   public tambahan: string
 
-  @column()
-  public user_id: number
+  @column({ serializeAs: null })
+  public user_id: number | null
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
