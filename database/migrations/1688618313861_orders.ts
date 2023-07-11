@@ -20,6 +20,8 @@ export default class extends BaseSchema {
       table.string('id').primary().defaultTo(generateRandomValue(5))
       table.integer('user_id').unsigned().references('id').inTable('users').onDelete('CASCADE')
       table.string('nama_lengkap', 255).notNullable()
+      table.string('status', 255).defaultTo("Dijadwalkan")
+      table.string('terapis', 255).nullable()
       table.string('gender', 100).notNullable()
       table.string('durasi', 255).notNullable()
       table.string('tambahan', 255).notNullable()

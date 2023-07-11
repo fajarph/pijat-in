@@ -3,10 +3,16 @@ import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Order extends BaseModel {
   @column({ isPrimary: true })
-  public id: number
+  public id: string
 
   @column()
   public nama_lengkap: string
+
+  @column()
+  public status: string
+
+  @column()
+  public terapis: string
 
   @column()
   public gender: string
