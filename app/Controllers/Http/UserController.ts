@@ -60,7 +60,7 @@ export default class UserController {
                 return response.status(401).json({msg: 'Pengguna tidak ditemukan' })
             }
 
-            const data = request.only(['name', 'nik', 'tempat_lahir', 'tanggal_lahir', 'image_url'])
+            const data = request.only(['nama', 'nik', 'tempat_lahir', 'tanggal_lahir', 'image_url'])
 
             user.merge(data)
 
