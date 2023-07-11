@@ -26,7 +26,7 @@ export default class OrderController {
             await auth.use("api").authenticate()
 
             const user = auth.use('api').user
-            const { nama_lengkap, gender, durasi, tambahan, tanggal_lahir } = request.all()
+            const { nama_lengkap, gender, durasi, tambahan, tanggal_lahir, tanggal_pesanan } = request.all()
 
             const newOrder = new Order()
             newOrder.fill({
@@ -35,6 +35,7 @@ export default class OrderController {
                 durasi,
                 tambahan,
                 tanggal_lahir,
+                tanggal_pesanan,
                 user_id: user?.id
             })
 
