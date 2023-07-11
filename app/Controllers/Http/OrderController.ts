@@ -1,6 +1,18 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext";
 import Order from "App/Models/Order";
 
+const generateRandomValue = (length: number) => {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
+    let result = ''
+  
+    for (let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * characters.length)
+        result += characters.charAt(randomIndex)
+    }
+  
+    return result
+}
+
 export default class OrderController {
 
     public async getOrder({ response, auth }: HttpContextContract) {
@@ -30,6 +42,7 @@ export default class OrderController {
 
             const newOrder = new Order()
             newOrder.fill({
+                id_order: generateRandomValue(5),
                 nama_lengkap,
                 gender,
                 durasi,
