@@ -27,9 +27,9 @@ Route.get('/', async () => {
 Route.group(() => {
   Route.post("register", "AuthController.register");
   Route.post("login", "AuthController.login");
-  Route.get("users", "UserController.getUser")
-  Route.get("token", "UserController.getUserToken")
-  Route.put("users/:id", "UserController.update")
-  Route.get("orders", "OrderController.getOrder")
-  Route.post("orders", "OrderController.createOrder")
+  Route.get("users", "UserController.getUser").middleware('auth:api');
+  Route.get("token", "UserController.getUserToken").middleware('auth:api');
+  Route.put("users/:id", "UserController.update").middleware('auth:api');
+  Route.get("orders", "OrderController.getOrder").middleware('auth:api');
+  Route.post("orders", "OrderController.createOrder").middleware('auth:api');
 }).prefix("v1/api");
