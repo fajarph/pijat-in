@@ -27,6 +27,9 @@ export default class Order extends BaseModel {
   public tanggal_pesanan: string
 
   @column()
+  public tanggal_lahir: string
+
+  @column()
   public id_order: string
 
   @column({ serializeAs: null })
