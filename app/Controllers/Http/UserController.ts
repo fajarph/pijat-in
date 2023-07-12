@@ -9,7 +9,7 @@ export default class UserController {
 
             const output = await User.query()
                 .preload("orders", (query) => {
-                    query.select("nama_lengkap", "gender", "durasi", "tambahan")
+                    query.select("id", "id_order", "nama_lengkap", "gender", "durasi", "tambahan", "tanggal_pesanan", "harga", "jam")
                 })
                 .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
 
@@ -32,9 +32,8 @@ export default class UserController {
             const user = auth.use("api").user
             const output = await User.query()
                 .where("id", user!.id)
-                .preload("orders", (query) => 
-                {query
-                    .select("nama_lengkap", "gender", "durasi", "tambahan")
+                .preload("orders", (query) => {
+                    query.select("id", "id_order", "nama_lengkap", "gender", "durasi", "tambahan", "tanggal_pesanan", "harga", "jam")
                 })
                 .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
 
