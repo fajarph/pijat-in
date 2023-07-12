@@ -19,7 +19,7 @@ export default class OrderController {
         try {
             await auth.use("api").authenticate()
 
-            const output = await Order.query().select("nama_lengkap", "gender", "durasi", "tambahan", "user_id")
+            const output = await Order.query().select("nama_lengkap", "gender", "durasi", "tambahan", "tanggal_pesanan", "harga", "jam", "user_id")
 
             response.status(200).json({
                 status: 200,
