@@ -42,7 +42,7 @@ export default class OrderController {
 
             const newOrder = new Order()
             newOrder.fill({
-                id_order: generateRandomValue(5),
+                id_order: generateRandomValue(7),
                 nama_lengkap,
                 gender,
                 durasi,
