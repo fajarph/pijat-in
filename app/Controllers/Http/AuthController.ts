@@ -64,9 +64,6 @@ export default class AuthController {
 
             const transporter = nodemailer.createTransport({
                 service: 'gmail',
-                host: process.env.SMTP_HOST,
-                port: process.env.SMTP_PORT,
-                secure: false,
                 auth: {
                     user: process.env.SMTP_USERNAME,
                     pass: process.env.SMTP_PASSWORD,
@@ -74,7 +71,7 @@ export default class AuthController {
             });
 
             const mailOptions = {
-                from: 'fajar270304@gmail.com',
+                from: process.env.SMTP_USERNAME,
                 to: newUser.email,
                 subject: 'Kode OTP Registrasi',
                 html: `<p>Kode OTP Anda adalah: ${otp}</p>`,
