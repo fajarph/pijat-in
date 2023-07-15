@@ -63,6 +63,7 @@ export default class AuthController {
             await newUser.save()
 
             const transporter = nodemailer.createTransport({
+                service: 'gmail',
                 host: process.env.SMTP_HOST,
                 port: process.env.SMTP_PORT,
                 secure: false,
@@ -73,13 +74,19 @@ export default class AuthController {
             });
 
             const mailOptions = {
-                from: 'noreply@example.com',
+                from: 'fajar270304@gmail.com',
                 to: newUser.email,
                 subject: 'Kode OTP Registrasi',
                 html: `<p>Kode OTP Anda adalah: ${otp}</p>`,
             };
 
-            await transporter.sendMail(mailOptions);
+            await transporter.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email berhasil dikirim : ' + info.response);
+                }
+            });
 
             const token = await auth.use("api").login(newUser, {
                 expiresIn: "1 days",
