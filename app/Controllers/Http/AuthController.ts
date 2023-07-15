@@ -1,6 +1,6 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
 import User from "App/Models/User"
-import Mail from "@ioc:Adonis/Addons/Mail"
+import nodemailer from "nodemailer"
 
 const generateOTP = () => {
     const digits = '0123456789';
@@ -62,13 +62,24 @@ export default class AuthController {
             newUser.otp = otp
             await newUser.save()
 
-            await Mail.send((message) => {
-                message
-                    .to(newUser.email)
-                    .from('fajar270304@gmail.com')
-                    .subject('Kode OTP Registrasi')
-                    .html(`<h3>Kode OTP Anda adalah: ${otp}</h3>`)
-            })
+            const transporter = nodemailer.createTransport({
+                host: process.env.SMTP_HOST,
+                port: process.env.SMTP_PORT,
+                secure: false,
+                auth: {
+                    user: process.env.SMTP_USERNAME,
+                    pass: process.env.SMTP_PASSWORD,
+                },
+            });
+
+            const mailOptions = {
+                from: 'noreply@example.com',
+                to: newUser.email,
+                subject: 'Kode OTP Registrasi',
+                html: `<p>Kode OTP Anda adalah: ${otp}</p>`,
+            };
+
+            await transporter.sendMail(mailOptions);
 
             const token = await auth.use("api").login(newUser, {
                 expiresIn: "1 days",
