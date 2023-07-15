@@ -2,7 +2,7 @@ import User from "App/Models/User"
 const bcrypt = require("bcrypt")
 const generateOTP = require("App/Util/generateOtp")
 const sendEmail = require("App/Util/sendEmail")
-const { AUTH_EMAIL } = process.env
+const { SMTP_EMAIL } = process.env
 
 const hashData = async (data, saltRounds = 10) => {
     try {
@@ -13,9 +13,9 @@ const hashData = async (data, saltRounds = 10) => {
     }
 }
     
-const sendOTP = async ({email, subject, message, duration = 1 }) => {
+const sendOTP = async ({nama, no_telp, password, email, subject, message, duration = 1 }) => {
     try {
-        if (!(email && subject && message)) {
+        if (!( nama && email && subject && message)) {
             throw Error("Provide values for email, subject, message")
         }
 
@@ -24,7 +24,7 @@ const sendOTP = async ({email, subject, message, duration = 1 }) => {
         const generatedOTP = await generateOTP()
 
         const mailOptions = {
-            from: AUTH_EMAIL,
+            from: SMTP_EMAIL,
             to: email,
             subject,
             html: `<p>${message}</p><p style="color:tomato;
@@ -35,7 +35,10 @@ const sendOTP = async ({email, subject, message, duration = 1 }) => {
 
         const hashedOTP = await hashData(generatedOTP)
         const newOTP = new User()
+        newOTP.nama = nama
+        newOTP.no_telp = no_telp
         newOTP.email = email
+        newOTP.password = password
         newOTP.otp = hashedOTP
         newOTP.created = new Date() 
         newOTP.expires = new Date(Date.now() + 3600000 * +duration)

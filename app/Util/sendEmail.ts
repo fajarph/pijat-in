@@ -20,7 +20,7 @@ transporter.verify((error, succes) => {
 
 const sendEmail = async (mailOptions) => {
     try {
-        await transporter.sendEmail(mailOptions)
+        await transporter.sendMail(mailOptions)
         return 
     } catch (error) {
         throw error

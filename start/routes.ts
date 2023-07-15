@@ -37,9 +37,12 @@ Route.group(() => {
 
 Route.post('/otp', async ({ request, response }) => {
   try {
-    const { email, subject, message, duration } = request.all()
+    const {nama, no_telp, email, password, subject, message, duration } = request.all()
     const createdOTP = await sendOTP({
+      nama,
+      no_telp,
       email,
+      password,
       subject,
       message,
       duration
