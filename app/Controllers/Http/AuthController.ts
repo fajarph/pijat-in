@@ -1,6 +1,5 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
 import User from "App/Models/User"
-const Mail = use("Mail")
 
 export default class AuthController {
 
