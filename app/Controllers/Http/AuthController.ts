@@ -1,5 +1,17 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
 import User from "App/Models/User"
+import Mail from "@ioc:Adonis/Addons/Mail"
+
+const generateOTP = () => {
+    const digits = '0123456789';
+    let OTP = '';
+  
+    for (let i = 0; i < 4; i++) {
+        OTP += digits[Math.floor(Math.random() * 10)];
+    }
+  
+    return OTP;
+}
 
 export default class AuthController {
 
@@ -44,6 +56,19 @@ export default class AuthController {
             newUser.password = password
 
             await newUser.save()
+
+            const otp = generateOTP()
+
+            newUser.otp = otp
+            await newUser.save()
+
+            await Mail.send((message) => {
+                message
+                    .to(newUser.email)
+                    .from('fajar270304@gmail.com')
+                    .subject('Kode OTP Registrasi')
+                    .html(`<h3>Kode OTP Anda adalah: ${otp}</h3>`)
+            })
 
             const token = await auth.use("api").login(newUser, {
                 expiresIn: "1 days",
