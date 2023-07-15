@@ -41,6 +41,9 @@ export default class User extends BaseModel {
   public image_url: string
 
   @column()
+  public otp: string
+
+  @column()
   public rememberMeToken: string | null
 
   @hasMany(() => Order, {

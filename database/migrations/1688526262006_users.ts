@@ -15,6 +15,7 @@ export default class extends BaseSchema {
       table.string('tanggal_lahir', 180).nullable()
       table.string('tempat_lahir', 180).nullable()
       table.string('image_url', 500).defaultTo("https://images-cdn.9gag.com/photo/azMoKjK_700b.jpg")
+      table.string('otp')
       table.string('remember_me_token').nullable()
 
       /**
