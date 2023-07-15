@@ -19,6 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
+const { sendOTP } = require("../app/Controllers/Http/OtpsController")
 
 Route.get('/', async () => {
   return { msg: 'API Hit Succes' }
@@ -33,3 +34,18 @@ Route.group(() => {
   Route.get("orders", "OrderController.getOrder")
   Route.post("orders", "OrderController.createOrder")
 }).prefix("v1/api");
+
+Route.post('/otp', async ({ request, response }) => {
+  try {
+    const { email, subject, message, duration } = request.all()
+    const createdOTP = await sendOTP({
+      email,
+      subject,
+      message,
+      duration
+    })
+    response.status(200).json(createdOTP)
+  } catch (error) {
+    response.status(400).json(error.message)
+  }
+})

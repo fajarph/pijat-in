@@ -44,6 +44,12 @@ export default class User extends BaseModel {
   public otp: string
 
   @column()
+  public created: Date
+
+  @column()
+  public expires: Date
+
+  @column()
   public rememberMeToken: string | null
 
   @hasMany(() => Order, {
