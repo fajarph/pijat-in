@@ -19,7 +19,7 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-const { sendOTP } = require("../app/Controllers/Http/OtpsController")
+const { sendOTP } = require("../app/Controllers/Http/OtpController")
 
 Route.get('/', async () => {
   return { msg: 'API Hit Succes' }

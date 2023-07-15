@@ -13,12 +13,8 @@ const hashData = async (data, saltRounds = 10) => {
     }
 }
     
-const sendOtp = async ({ auth, email, subject, message, duration = 1 }) => {
+const sendOTP = async ({email, subject, message, duration = 1 }) => {
     try {
-        await auth.use("api").authenticate()
-        
-        const user = auth.use("api").user
-
         if (!(email && subject && message)) {
             throw Error("Provide values for email, subject, message")
         }
@@ -29,7 +25,7 @@ const sendOtp = async ({ auth, email, subject, message, duration = 1 }) => {
 
         const mailOptions = {
             from: AUTH_EMAIL,
-            to: user.email,
+            to: email,
             subject,
             html: `<p>${message}</p><p style="color:tomato;
             font-size:25px;letter-spacing:2px;"><b>
@@ -51,4 +47,4 @@ const sendOtp = async ({ auth, email, subject, message, duration = 1 }) => {
     }
 }
 
-module.exports = { sendOtp }
+module.exports = { sendOTP } 
