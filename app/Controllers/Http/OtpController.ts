@@ -36,7 +36,7 @@ const verifyOTP = async ({email, otp}) => {
 
         const  { expires } = matchedOTPRecord
 
-        if (expires.getTime() < Date.now()) {
+        if (expires && expires.getTime() < Date.now()) {
             const user = await User.findByOrFail("email", email);
             await user.delete()
             throw Error("Code has expired. Request for a new one.")
