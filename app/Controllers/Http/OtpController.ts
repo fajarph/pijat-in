@@ -12,6 +12,43 @@ const hashData = async (data, saltRounds = 10) => {
         
     }
 }
+
+const verifyHashedData = async (unhashed, hashed) => {
+    try {
+        const match = await bcrypt.compare(unhashed, hashed)
+        return match
+    } catch (error) {
+        throw error
+    }
+}
+
+const verifyOTP = async ({email, otp}) => {
+    try {
+        if (!(email && otp)) {
+            throw Error("Provide values for email, otp")
+        }
+
+        const matchedOTPRecord = await User.findBy("email", email)
+
+        if (!matchedOTPRecord) {
+            throw Error("No otp record found.")
+        }
+
+        const  { expires } = matchedOTPRecord
+
+        if (expires.getTime() < Date.now()) {
+            const user = await User.findByOrFail("email", email);
+            await user.delete()
+            throw Error("Code has expired. Request for a new one.")
+        }
+
+        const hashedOTP = matchedOTPRecord.otp
+        const validOTP = await verifyHashedData(otp, hashedOTP)
+        return validOTP
+    } catch (error) {
+        throw error
+    }
+}
     
 const sendOTP = async ({nama, no_telp, password, email, subject, message, duration = 1 }) => {
     try {
@@ -29,7 +66,7 @@ const sendOTP = async ({nama, no_telp, password, email, subject, message, durati
             subject,
             html: `<p>${message}</p><p style="color:tomato;
             font-size:25px;letter-spacing:2px;"><b>
-            ${generatedOTP}</b></p><p>This Code <b>expires in ${duration}`
+            ${generatedOTP}</b></p><p>This Code <b>expires in ${duration} hour(s)</b>.</p>`
         }
         await sendEmail(mailOptions)
 
@@ -50,4 +87,13 @@ const sendOTP = async ({nama, no_telp, password, email, subject, message, durati
     }
 }
 
-module.exports = { sendOTP } 
+const deleteOTP = async (email) => {
+    try {
+        const user = await User.findByOrFail("email", email);
+        await user.delete()
+    } catch (error) {
+        throw error
+    }
+}
+
+module.exports = { sendOTP, verifyOTP, deleteOTP } 
