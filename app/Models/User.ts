@@ -8,6 +8,7 @@ import {
   HasMany
 } from '@ioc:Adonis/Lucid/Orm'
 import Order from './Order'
+import Address from './Address'
 
 export default class User extends BaseModel {
   @column({ isPrimary: true })
@@ -56,6 +57,11 @@ export default class User extends BaseModel {
     foreignKey: 'user_id', // defaults to userId
   })
   public orders: HasMany<typeof Order>
+
+  @hasMany(() => Address, {
+    foreignKey: 'user_id', // defaults to userId
+  })
+  public addreses: HasMany<typeof Address>
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

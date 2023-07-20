@@ -24,11 +24,13 @@ const verifyHashedData = async (unhashed, hashed) => {
 
 const verifyOTP = async ({email, otp}) => {
     try {
+        console.log('Email:', email);
         if (!(email && otp)) {
             throw Error("Provide values for email, otp")
         }
 
         const matchedOTPRecord = await User.findBy("email", email)
+        console.log('Matched OTP Record:', matchedOTPRecord);
 
         if (!matchedOTPRecord) {
             throw Error("No otp record found.")
