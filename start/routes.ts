@@ -54,7 +54,7 @@ Route.post('/otp', async ({ request, response }) => {
   }
 })
 
-Route.post('/otp/verify', async ({ request, response }) => {
+Route.post('/verify', async ({ request, response }) => {
   try {
     let { email, otp } = request.body()
 

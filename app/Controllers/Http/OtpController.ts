@@ -9,7 +9,7 @@ const hashData = async (data, saltRounds = 10) => {
         const hashedData = await bcrypt.hash(data, saltRounds)
         return hashedData
     } catch (error) {
-        
+        throw error
     }
 }
 
@@ -24,7 +24,7 @@ const verifyHashedData = async (unhashed, hashed) => {
 
 const verifyOTP = async ({email, otp}) => {
     try {
-        console.log('Email:', email);
+        console.log('email:', email);
         if (!(email && otp)) {
             throw Error("Provide values for email, otp")
         }
@@ -39,14 +39,14 @@ const verifyOTP = async ({email, otp}) => {
         const  { expires } = matchedOTPRecord
 
         if (expires && expires.getTime() < Date.now()) {
-            const user = await User.findByOrFail("email", email);
-            await user.delete()
-            throw Error("Code has expired. Request for a new one.")
+            const user = await User.findBy("email", email);
+            user && await user.delete();
+            throw new Error("Code has expired. Request for a new one.");
         }
 
-        const hashedOTP = matchedOTPRecord.otp
-        const validOTP = await verifyHashedData(otp, hashedOTP)
-        return validOTP
+        const hashedOTP = matchedOTPRecord.otp;
+        const validOTP = await verifyHashedData(otp, hashedOTP);
+        return validOTP;
     } catch (error) {
         throw error
     }

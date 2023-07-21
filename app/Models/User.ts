@@ -11,6 +11,9 @@ import Order from './Order'
 import Address from './Address'
 
 export default class User extends BaseModel {
+  static deleteOne(_arg0: { email: any }) {
+      throw new Error("Method not implemented.")
+  }
   @column({ isPrimary: true })
   public id: number
 
