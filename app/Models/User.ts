@@ -42,13 +42,7 @@ export default class User extends BaseModel {
   public image_url: string
 
   @column()
-  public otp: string
-
-  @column()
-  public created: Date
-
-  @column()
-  public expires: Date
+  public verified: boolean
 
   @column()
   public rememberMeToken: string | null

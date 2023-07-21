@@ -6,18 +6,16 @@ export default class extends BaseSchema {
   public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-      table.string('nama', 255).notNullable()
-      table.string('no_telp', 50).notNullable()
+      table.string('nama', 255).nullable()
+      table.string('no_telp', 50).nullable()
       table.string('nik', 180).nullable()
       table.string('status', 180).defaultTo("Aktif")
       table.string('email', 255).notNullable().unique()
-      table.string('password', 180).notNullable()
+      table.string('password', 180).nullable()
       table.string('tanggal_lahir', 180).nullable()
       table.string('tempat_lahir', 180).nullable()
       table.string('image_url', 500).defaultTo("https://images-cdn.9gag.com/photo/azMoKjK_700b.jpg")
-      table.string('otp')
-      table.date('created')
-      table.date('expires')
+      table.boolean('verified').defaultTo(false)
       table.string('remember_me_token').nullable()
 
       /**

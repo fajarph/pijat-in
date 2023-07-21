@@ -1,5 +1,6 @@
 import { HttpContextContract } from "@ioc:Adonis/Core/HttpContext"
 import User from "App/Models/User"
+const { sendVerificationOTPEmail } = require("../Http/EmailVerifController")
 
 export default class AuthController {
 
@@ -13,6 +14,10 @@ export default class AuthController {
             })
     
             const user = await User.findByOrFail("email", email)
+
+            if (!user.verified) {
+                throw Error("Email hasn't been verified yet. Check your inbox")
+            }
     
             return {
                 status: 200,
@@ -49,10 +54,13 @@ export default class AuthController {
                 expiresIn: "1 days",
             })
 
+            await sendVerificationOTPEmail(email)
+
             return {
                 status: 200,
                 token: token.token,
-                message: "Register berhasil"
+                message: "Register berhasil",
+                verified: newUser.verified
             }
         } catch (error) {
             return {

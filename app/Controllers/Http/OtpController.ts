@@ -1,26 +1,8 @@
-import User from "App/Models/User"
-const bcrypt = require("bcrypt")
+import Otp from "App/Models/Otp"
 const generateOTP = require("App/Util/generateOtp")
 const sendEmail = require("App/Util/sendEmail")
+const { hashData, verifyHashedData } = require("../../Util/hashData")
 const { SMTP_EMAIL } = process.env
-
-const hashData = async (data, saltRounds = 10) => {
-    try {
-        const hashedData = await bcrypt.hash(data, saltRounds)
-        return hashedData
-    } catch (error) {
-        throw error
-    }
-}
-
-const verifyHashedData = async (unhashed, hashed) => {
-    try {
-        const match = await bcrypt.compare(unhashed, hashed)
-        return match
-    } catch (error) {
-        throw error
-    }
-}
 
 const verifyOTP = async ({email, otp}) => {
     try {
@@ -28,7 +10,7 @@ const verifyOTP = async ({email, otp}) => {
             throw Error("Provide values for email, otp")
         }
 
-        const matchedOTPRecord = await User.findBy("email", email)
+        const matchedOTPRecord = await Otp.findBy("email", email)
 
         if (!matchedOTPRecord) {
             throw Error("No otp record found.")
@@ -42,13 +24,13 @@ const verifyOTP = async ({email, otp}) => {
     }
 }
     
-const sendOTP = async ({nama, no_telp, password, email, subject, message, duration = 1 }) => {
+const sendOTP = async ({email, subject, message, duration = 1 }) => {
     try {
-        if (!( nama && email && subject && message)) {
+        if (!( email && subject && message )) {
             throw Error("Provide values for email, subject, message")
         }
 
-        await User.query().where('email', email).delete();
+        await Otp.query().where('email', email).delete();
 
         const generatedOTP = await generateOTP()
 
@@ -63,11 +45,8 @@ const sendOTP = async ({nama, no_telp, password, email, subject, message, durati
         await sendEmail(mailOptions)
 
         const hashedOTP = await hashData(generatedOTP)
-        const newOTP = new User()
-        newOTP.nama = nama
-        newOTP.no_telp = no_telp
+        const newOTP = new Otp()
         newOTP.email = email
-        newOTP.password = password
         newOTP.otp = hashedOTP
         newOTP.created = new Date()
         newOTP.expires = new Date(Date.now() + 3600 * +duration)
@@ -81,7 +60,7 @@ const sendOTP = async ({nama, no_telp, password, email, subject, message, durati
 
 const deleteOTP = async (email) => {
     try {
-        const user = await User.findByOrFail("email", email);
+        const user = await Otp.findByOrFail("email", email);
         await user.delete()
     } catch (error) {
         throw error

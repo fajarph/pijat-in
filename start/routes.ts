@@ -20,6 +20,7 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 const { sendOTP, verifyOTP } = require("../app/Controllers/Http/OtpController")
+const { sendVerificationOTPEmail, verifyUserEmail } = require("../app/Controllers/Http/EmailVerifController")
 
 Route.get('/', async () => {
   return { msg: 'API Hit Succes' }
@@ -36,31 +37,67 @@ Route.group(() => {
   Route.post("address", "AddressController.createAddress")
 }).prefix("v1/api");
 
-Route.post('/otp', async ({ request, response }) => {
-  try {
-    const {nama, no_telp, email, password, subject, message, duration } = request.all()
-    const createdOTP = await sendOTP({
-      nama,
-      no_telp,
-      email,
-      password,
-      subject,
-      message,
-      duration
-    })
-    response.status(200).json(createdOTP)
-  } catch (error) {
-    response.status(400).json(error.message)
-  }
-})
+Route.group(() => {
+  Route.post('/', async ({ request, response }) => {
+    try {
+      const {nama, no_telp, email, password, subject, message, duration } = request.all()
 
-Route.post('/verify', async ({ request, response }) => {
-  try {
-    let { email, otp } = request.body()
+      const createdOTP = await sendOTP({
+        nama,
+        no_telp,
+        email,
+        password,
+        subject,
+        message,
+        duration
+      })
 
-    const validOTP = await verifyOTP({ email, otp })
-    response.status(200).json({ valid: validOTP})
-  } catch (error) {
-    response.status(400).json(error.message)
-  }
-})
+      response.status(200).json(createdOTP)
+    } catch (error) {
+      response.status(400).json(error.message)
+    }
+  })
+  
+  Route.post('verify', async ({ request, response }) => {
+    try {
+      let { email, otp } = request.body()
+  
+      const validOTP = await verifyOTP({ email, otp })
+      response.status(200).json({ valid: validOTP})
+    } catch (error) {
+      response.status(400).json(error.message)
+    }
+  })
+}).prefix("v1/api/otp");
+
+Route.group(() => {
+  Route.post('/', async ({ request, response }) => {
+    try {
+      const { email } = request.body()
+      
+      if (!email) throw Error("An email is required!")
+  
+      const createdEmailVerificationOTP = await sendVerificationOTPEmail(email)
+      response.status(200).json(createdEmailVerificationOTP)
+      
+    } catch (error) {
+      response.status(400).json(error.message)
+    }
+  })
+
+  Route.post('verify', async ({ request, response }) => {
+    try {
+      let { email, otp } = request.body()
+
+      if (!(email && otp )) throw Error("Empty otp details are not allowed")
+         
+      await verifyUserEmail({email, otp})
+      response.status(200).json({email, verified: true})
+    } catch (error) {
+      response.status(400).json(error.message)
+    }
+  })
+}).prefix("v1/api/email_verification")
+
+
+
