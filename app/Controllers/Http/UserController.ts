@@ -11,6 +11,9 @@ export default class UserController {
                 .preload("orders", (query) => {
                     query.select("id", "id_order", "nama_lengkap", "gender", "durasi", "tambahan", "tanggal_pesanan", "harga", "jam")
                 })
+                .preload("addreses", (query) => {
+                    query.select("id", "lokasi", "alamat_lengkap", "detail_tambahan", "map_url")
+                })
                 .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
 
             response.status(200).json({
@@ -34,6 +37,9 @@ export default class UserController {
                 .where("id", user!.id)
                 .preload("orders", (query) => {
                     query.select("id", "id_order", "nama_lengkap", "gender", "durasi", "tambahan", "tanggal_pesanan", "harga", "jam")
+                })
+                .preload("addreses", (query) => {
+                    query.select("id", "lokasi", "alamat_lengkap", "detail_tambahan", "map_url")
                 })
                 .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
 
