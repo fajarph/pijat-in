@@ -24,24 +24,14 @@ const verifyHashedData = async (unhashed, hashed) => {
 
 const verifyOTP = async ({email, otp}) => {
     try {
-        console.log('email:', email);
         if (!(email && otp)) {
             throw Error("Provide values for email, otp")
         }
 
         const matchedOTPRecord = await User.findBy("email", email)
-        console.log('Matched OTP Record:', matchedOTPRecord);
 
         if (!matchedOTPRecord) {
             throw Error("No otp record found.")
-        }
-
-        const  { expires } = matchedOTPRecord
-
-        if (expires && expires.getTime() < Date.now()) {
-            const user = await User.findBy("email", email);
-            user && await user.delete();
-            throw new Error("Code has expired. Request for a new one.");
         }
 
         const hashedOTP = matchedOTPRecord.otp;
@@ -79,8 +69,8 @@ const sendOTP = async ({nama, no_telp, password, email, subject, message, durati
         newOTP.email = email
         newOTP.password = password
         newOTP.otp = hashedOTP
-        newOTP.created = new Date() 
-        newOTP.expires = new Date(Date.now() + 3600000 * +duration)
+        newOTP.created = new Date()
+        newOTP.expires = new Date(Date.now() + 3600 * +duration)
 
         const createdOTPRecord = await newOTP.save()
         return createdOTPRecord
