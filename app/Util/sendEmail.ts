@@ -4,7 +4,7 @@ const {SMTP_HOST, SMTP_PORT, SMTP_EMAIL, SMTP_PASS} = process.env
 let transporter = nodemailer.createTransport({
     host: SMTP_HOST,
     port: SMTP_PORT,
-    secure: true,
+    secure: false,
     auth: {
         user: SMTP_EMAIL,
         pass: SMTP_PASS,
