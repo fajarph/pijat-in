@@ -13,7 +13,11 @@ export default class AuthController {
                 expiresIn: "1 days",
             })
     
-            const user = await User.findByOrFail("email", email)
+            const user = await User.findBy("email", email)
+
+            if (!user) {
+                throw Error("User not found with the given email")
+            }
 
             if (!user.verified) {
                 throw Error("Email hasn't been verified yet. Check your inbox")
@@ -25,12 +29,10 @@ export default class AuthController {
                 nama: user.nama,
                 email: user.email,
                 image_url: user.image_url,
+                verified: user.verified
             }
         } catch (error) {
-            return {
-                status: 404,
-                message: "email atau password anda salah",
-            }
+            throw error
         }
     }
 
@@ -63,10 +65,7 @@ export default class AuthController {
                 verified: newUser.verified
             }
         } catch (error) {
-            return {
-                status: 404,
-                message: error.message,
-            }
+            throw error
         }
     }
 

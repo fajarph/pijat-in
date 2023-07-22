@@ -42,7 +42,7 @@ export default class User extends BaseModel {
   public image_url: string
 
   @column()
-  public verified: boolean
+  public verified: boolean = false
 
   @column()
   public rememberMeToken: string | null
