@@ -2,10 +2,9 @@ import nodemailer from "nodemailer"
 
 const {SMTP_HOST, SMTP_PORT, SMTP_EMAIL, SMTP_PASS} = process.env
 let transporter = nodemailer.createTransport({
-    service: "outlook",
     host: SMTP_HOST,
     port: SMTP_PORT,
-    secure: false,
+    secure: true,
     auth: {
         user: SMTP_EMAIL,
         pass: SMTP_PASS,
