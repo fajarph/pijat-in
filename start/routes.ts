@@ -36,7 +36,7 @@ Route.group(() => {
   Route.get("orders", "OrderController.getOrder")
   Route.post("orders", "OrderController.createOrder")
   Route.post("address", "AddressController.createAddress")
-}).prefix("v1/api");
+}).prefix("v1/api")
 
 Route.group(() => {
   Route.post('/', async ({ request, response }) => {
@@ -69,7 +69,7 @@ Route.group(() => {
       response.status(400).json(error.message)
     }
   })
-}).prefix("v1/api/otp");
+}).prefix("v1/api/otp")
 
 Route.group(() => {
   Route.post('/', async ({ request, response }) => {
@@ -101,7 +101,7 @@ Route.group(() => {
 }).prefix("v1/api/email_verification")
 
 Route.group(() => {
-  Route.post('', async ({ request, response }) => {
+  Route.post('/', async ({ request, response }) => {
     try {
       const { email } = request.body()
 
@@ -117,14 +117,14 @@ Route.group(() => {
 
   Route.post('reset', async ({ request, response }) => {
     try {
-      let { email, otp, newPassord } = request.body()
+      let { email, otp, newPassword } = request.body()
 
-      if (!(email && otp && newPassord) ) throw Error("Empty credentials are not allowed.")
+      if (!(email && otp && newPassword) ) throw Error("Empty credentials are not allowed.")
 
-      await resetUserPassword({ email, otp, newPassord })
+      await resetUserPassword({ email, otp, newPassword })
       response.status(200).json({ email, passwordreset: true})
     } catch (error) {
       response.status(400).json(error.message)
     }
   })
-}).prefix("v1/api/forget_password");
+}).prefix("v1/api/forget_password")

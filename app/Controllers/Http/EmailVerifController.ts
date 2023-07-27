@@ -4,6 +4,7 @@ const { sendOTP, verifyOTP, deleteOTP} = require("../Http/OtpController")
 const verifyUserEmail = async ({email, otp}) => {
     try {
         const validOTP = await verifyOTP({ email, otp})
+        
         if (!validOTP) {
             throw Error("Invalid code passed. Check your inbox.")
         }
