@@ -42,6 +42,9 @@ export default class User extends BaseModel {
   public image_url: string
 
   @column()
+  public ktp_url: string
+
+  @column()
   public verified: boolean = false
 
   @column()
