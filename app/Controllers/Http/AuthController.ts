@@ -62,7 +62,7 @@ export default class AuthController {
             return {
                 status: 200,
                 token: token.token,
-                message: "Register berhasil",
+                message: "Registration is successful",
                 verified: newUser.verified,
                 password: newUser.password
             }

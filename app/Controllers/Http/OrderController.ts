@@ -28,7 +28,7 @@ export default class OrderController {
         } catch (error) {
             response.status(404).json({
                 status: 404,
-                msg: "Autentikasi gagal"
+                msg: error.message
             })
         }
     }
@@ -57,13 +57,13 @@ export default class OrderController {
 
             response.status(200).json({
                 status: 200,
-                msg: "Selamat Menikmati",
+                msg: "Order created successfully",
                 order: newOrder,
             })
         } catch (error) {
             response.status(404).json({
                 status: 404,
-                msg: "Autentikasi gagal"
+                msg: error.message
             })
         }
     }

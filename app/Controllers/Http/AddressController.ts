@@ -23,13 +23,13 @@ export default class AddressController {
 
             response.status(200).json({
                 status: 200,
-                msg: "Alamat berhasil terbuat",
+                msg: "Address created successfully",
                 Address: newAddress,
             })
         } catch (error) {
             response.status(404).json({
                 status: 404,
-                msg: "Autentikasi gagal"
+                msg: error.message
             })
         }
     }

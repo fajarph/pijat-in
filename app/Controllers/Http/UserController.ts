@@ -23,7 +23,7 @@ export default class UserController {
         } catch (error) {
             response.status(401).json({
                 status: 401,
-                msg : "Autentikasi gagal"
+                msg : error.message
             })
         }
     }
@@ -50,7 +50,7 @@ export default class UserController {
         } catch (error) {
             response.status(401).json({
                 status: 401,
-                msg : "Autentikasi gagal"
+                msg : error.message
             })
         }
     }
@@ -62,7 +62,7 @@ export default class UserController {
             const user = await User.find(params.id)
 
             if (!user) {
-                return response.status(401).json({msg: 'Pengguna tidak ditemukan' })
+                return response.status(401).json({msg: 'User not found' })
             }
 
             const data = request.only(['nama', 'nik', 'tempat_lahir', 'tanggal_lahir', 'ktp_url'])
@@ -71,9 +71,9 @@ export default class UserController {
 
             await user.save()
             
-            return response.json({msg: 'Pengguna berhasil diupdate', data: user })
+            return response.json({msg: 'User successfully updated', data: user })
         } catch (error) {
-            return response.status(401).json({msg: 'Terjadi kesalahan saat melakukan update'})
+            return response.status(401).json({msg: 'An error occurred while updating'})
         }
     }
 }
