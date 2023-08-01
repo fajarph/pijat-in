@@ -35,6 +35,7 @@ Route.group(() => {
   Route.put("users/:id", "UserController.update")
   Route.get("orders", "OrderController.getOrder")
   Route.post("orders", "OrderController.createOrder")
+  Route.get("order_histories", "OrderController.getOrderHistory")
   Route.post("address", "AddressController.createAddress")
 }).prefix("v1/api")
 
