@@ -14,7 +14,7 @@ export default class UserController {
                 .preload("addreses", (query) => {
                     query.select("id", "lokasi", "alamat_lengkap", "detail_tambahan", "map_url")
                 })
-                .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
+                .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url", "ktp_url")
 
             response.status(200).json({
                 status: 200,
@@ -41,7 +41,7 @@ export default class UserController {
                 .preload("addreses", (query) => {
                     query.select("id", "lokasi", "alamat_lengkap", "detail_tambahan", "map_url")
                 })
-                .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url")
+                .select("id", "nama", "no_telp", "nik", "status", "email", "tanggal_lahir", "tempat_lahir", "image_url", "ktp_url")
 
             response.status(200).json({
                 status: 200,
@@ -55,7 +55,7 @@ export default class UserController {
         }
     }
 
-    public async update({ request, response, params, auth }: HttpContextContract) {
+    public async updateDataDiri({ request, response, params, auth }: HttpContextContract) {
         try {
             await auth.use("api").authenticate()
 
@@ -65,13 +65,49 @@ export default class UserController {
                 return response.status(401).json({msg: 'User not found' })
             }
 
-            const data = request.only(['nama', 'nik', 'tempat_lahir', 'tanggal_lahir', 'ktp_url'])
+            const data = request.only(['ktp_url', 'nik', 'tempat_lahir', 'tanggal_lahir'])
 
             user.merge(data)
 
             await user.save()
             
-            return response.json({msg: 'User successfully updated', data: user })
+            return response.json({
+                status: 200,
+                msg: 'Personal Data successfully updated', 
+                ktp_url: user.ktp_url,
+                nik: user.nik,
+                tempat_lahir: user.tempat_lahir,
+                tanggal_lahir: user.tanggal_lahir,
+            })
+        } catch (error) {
+            return response.status(401).json({msg: 'An error occurred while updating'})
+        }
+    }
+
+
+    public async updateProfileUser({ request, response, params, auth }: HttpContextContract) {
+        try {
+            await auth.use("api").authenticate()
+
+            const user = await User.find(params.id)
+
+            if (!user) {
+                return response.status(401).json({msg: 'User not found' })
+            }
+
+            const data = request.only(['email', 'nama', 'no_telp'])
+
+            user.merge(data)
+
+            await user.save()
+            
+            return response.json({
+                status: 200,
+                msg: 'User successfully updated', 
+                email: user.email,
+                nama: user.nama,
+                no_telp: user.no_telp 
+            })
         } catch (error) {
             return response.status(401).json({msg: 'An error occurred while updating'})
         }

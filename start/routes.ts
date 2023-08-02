@@ -31,8 +31,9 @@ Route.group(() => {
   Route.post("register", "AuthController.register");
   Route.post("login", "AuthController.login");
   Route.get("users", "UserController.getUser")
-  Route.get("token", "UserController.getUserToken")
-  Route.put("users/:id", "UserController.update")
+  Route.get("users/token", "UserController.getUserToken")
+  Route.put("users/update/data/:id", "UserController.updateDataDiri")
+  Route.put("users/update/profile/:id", "UserController.updateProfileUser")
   Route.get("orders", "OrderController.getOrder")
   Route.post("orders", "OrderController.createOrder")
   Route.get("order_histories", "OrderController.getOrderHistory")
