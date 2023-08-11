@@ -20,7 +20,11 @@ export default class OrderController {
         try {
             await auth.use("api").authenticate()
 
-            const output = await Order.query().select("id_pesanan", "nama_lengkap", "gender", "durasi", "tambahan", "tanggal_pesanan", "harga", "jam", "user_id")
+            const output = await Order.query()
+                .preload("order_histories", (query) => {
+                    query.select("status_sebelumnya", "order_id", "created_history")
+                })
+                .select("id", "id_pesanan", "nama_lengkap", "gender", "status", "durasi", "tambahan", "tanggal_pesanan", "harga", "jam", "user_id")
 
             response.status(200).json({
                 status: 200,
@@ -59,17 +63,20 @@ export default class OrderController {
             const orderHistory = new OrderHistory()
             orderHistory.fill({
                 order_id: newOrder.id,
-                status_sebelumnya: newOrder.status,
                 created_history: newOrder.createdAt
             });
+
             await orderHistory.save()
 
             response.status(200).json({
                 status: 200,
                 msg: "Order created successfully",
                 order: newOrder,
-                orderHistory: orderHistory
+                history: orderHistory
             })
+
+            console.log(orderHistory);
+            
         } catch (error) {
             response.status(404).json({
                 status: 404,
