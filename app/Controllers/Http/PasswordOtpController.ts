@@ -18,10 +18,7 @@ const resetUserPassword = async ({ email, otp, password }) => {
 
         user.password = hashedNewPassword;
         await user.save();
-
-        console.log(password);
         
-
         await deleteOTP(email);
 
         return;
