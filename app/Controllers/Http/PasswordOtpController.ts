@@ -1,31 +1,32 @@
 import User from "App/Models/User"
 const { sendOTP, verifyOTP, deleteOTP } = require("../Http/OtpController")
-import Hash from '@ioc:Adonis/Core/Hash'
 
-
-const resetUserPassword = async ({email, otp, newPassword}) => {
+const resetUserPassword = async ({ email, otp, password }) => {
     try {
-        const validOTP = await verifyOTP({ email, otp})
+        const validOTP = await verifyOTP({ email, otp });
 
         if (!validOTP) {
-            throw Error("Invalid code passed. Check your inbox.")
+            throw new Error("Invalid code passed. Check your inbox.");
         }
 
-        const hashedNewPassword = await Hash.make(newPassword)
-        const user = await User.findBy('email', email)
+        const hashedNewPassword = await (password);
+        const user = await User.findBy('email', email);
 
         if (!user) {
-            throw new Error("User not found.")
+            throw new Error("User not found.");
         }
 
         user.password = hashedNewPassword;
-        await user.save()
+        await user.save();
 
-        await deleteOTP(email)
+        console.log(password);
+        
 
-        return
+        await deleteOTP(email);
+
+        return;
     } catch (error) {
-        throw error
+        throw error;
     }
 }
 

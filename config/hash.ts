@@ -27,7 +27,7 @@ export default hashConfig({
   | free to change the default value
   |
   */
-  default: Env.get('HASH_DRIVER', 'scrypt'),
+  default: Env.get('HASH_DRIVER', 'bcrypt'),
 
   list: {
     /*
@@ -92,5 +92,6 @@ export default hashConfig({
       driver: 'bcrypt',
       rounds: 10,
     },
+    
   },
 })

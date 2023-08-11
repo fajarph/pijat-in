@@ -119,11 +119,11 @@ Route.group(() => {
 
   Route.post('reset', async ({ request, response }) => {
     try {
-      let { email, otp, newPassword } = request.body()
+      const { email, otp, password } = request.body()
 
-      if (!(email && otp && newPassword) ) throw Error("Empty credentials are not allowed.")
+      if (!(email && otp && password) ) throw Error("Empty credentials are not allowed.")
 
-      await resetUserPassword({ email, otp, newPassword })
+      await resetUserPassword({ email, otp, password })
       response.status(200).json({ email, passwordreset: true})
     } catch (error) {
       response.status(400).json(error.message)
